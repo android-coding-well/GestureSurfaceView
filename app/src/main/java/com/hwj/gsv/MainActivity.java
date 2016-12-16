@@ -47,7 +47,13 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        binding.scLine.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    binding.svMap.isPointToCenter(b);
 
+            }
+        });
 
     }
 
@@ -74,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickAddPoint(View view) {
-        binding.svMap.addPoint();
+        binding.svMap.addNewPoint();
     }
 
     public void onClickCenter(View view) {
@@ -90,7 +96,4 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void onClickReference(View view) {
-        binding.svMap.showReference(true);
-    }
 }

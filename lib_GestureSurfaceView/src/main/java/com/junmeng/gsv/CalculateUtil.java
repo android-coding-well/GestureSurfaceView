@@ -21,7 +21,6 @@ public class CalculateUtil {
         if (a == null || o == null) {
             return b;
         }
-        // double angle = rotate * Math.PI / 180;
         double angle = Math.toRadians(rotate);//将角度转为弧度
         b.x = (float) ((a.x - o.x) * Math.cos(angle) - (a.y - o.y) * Math.sin(angle) + o.x);
         b.y = (float) ((a.x - o.x) * Math.sin(angle) + (a.y - o.y) * Math.cos(angle) + o.y);

@@ -462,7 +462,7 @@ public class GestureSurfaceView extends BaseSurfaceView {
      * @param point
      * @param isRelative 是否是相对原图坐标，是的话则将点转为原图坐标，否则转为绝对坐标
      */
-    public PointF convertToUsePoint(PointF point, boolean isRelative) {
+    public PointF convertToNeedPoint(PointF point, boolean isRelative) {
         PointF calP = new PointF();
         if (isRelative) {
             PointF oCenter = new PointF(mapWidth / 2.0f, mapHeight / 2.0f);//相对中心点
@@ -745,7 +745,7 @@ public class GestureSurfaceView extends BaseSurfaceView {
         paint.setColor(pointColor);
         paint.setStyle(Paint.Style.FILL);
         for (PointF p : getPointsList()) {
-            PointF pf = convertToUsePoint(p, false);
+            PointF pf = convertToNeedPoint(p, false);
             c.drawCircle(pf.x, pf.y, pointSize, paint);
         }
     }
@@ -815,17 +815,12 @@ public class GestureSurfaceView extends BaseSurfaceView {
         c.drawPath(path, paint);
         //画矩形左上角坐标
         c.drawText("(" + dLeftTop.x + "," + dLeftTop.y + ")", dLeftTop.x, dLeftTop.y, paint);
-        //c.drawText("("+dLeftDown.x+","+dLeftDown.y+")", dLeftDown.x, dLeftDown.y, paint);
-        // c.drawText("("+dRightTop.x+","+dRightTop.y+")", dRightTop.x, dRightTop.y, paint);
-        //c.drawText("("+dRightDown.x+","+dRightDown.y+")", dRightDown.x, dRightDown.y, paint);
 
 
         //画点
         for (PointF p : points) {
-            PointF pf = convertToUsePoint(p, false);
+            PointF pf = convertToNeedPoint(p, false);
             c.drawText("(" + pf.x + "," + pf.y + ")", pf.x, pf.y, paint);
-            /*PointF pf = getPointAfterRotate(new PointF(mapCenterX + p.x * mapScale, mapCenterY + p.y * mapScale), new PointF(mapCenterX, mapCenterY), mapRotate);
-            c.drawText("(" + pf.x + "," + pf.y + ")", pf.x, pf.y, paint);*/
         }
         //画屏幕中心点坐标
         c.drawText("(" + screenCenterX + "," + screenCenterY + ")", screenCenterX, screenCenterY, paint);
@@ -864,14 +859,9 @@ public class GestureSurfaceView extends BaseSurfaceView {
         c.drawText("(" + oCenter.x / mapScale + "," + oCenter.y / mapScale + ")", mapCenterX, mapCenterY + 40, paint);
 
         for (PointF p : points) {
-           /* PointF pf = getPointAfterRotate(new PointF(mapCenterX + p.x * mapScale, mapCenterY + p.y * mapScale), new PointF(mapCenterX, mapCenterY), mapRotate);
-            if (mapCoordinate == COORDINATE_MAP_LEFT_TOP) {
-                c.drawText("(" + (oCenter.x + p.x * mapScale) + "," + (oCenter.y + p.y * mapScale) + ")", pf.x, pf.y + 20, paint);
-            } else {
-                c.drawText("(" + (oCenter.x + p.x * mapScale) + "," + (oCenter.y - p.y * mapScale) + ")", pf.x, pf.y + 20, paint);
-            }*/
-            PointF pf = convertToUsePoint(p, false);
-            PointF rp = convertToUsePoint(p, true);
+
+            PointF pf = convertToNeedPoint(p, false);
+            PointF rp = convertToNeedPoint(p, true);
             paint.setColor(Color.BLUE);
             c.drawText("(" + rp.x * mapScale + "," + rp.y * mapScale + ")", pf.x, pf.y + 20, paint);
             paint.setColor(Color.GREEN);

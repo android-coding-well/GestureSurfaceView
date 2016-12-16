@@ -9,7 +9,7 @@
         android:orientation="vertical"
         tools:context="com.hwj.gsv.MainActivity">
 
-        <com.junmeng.gsv.GestureSurfaceView
+        <com.hwj.gsv.BusinessSurfaceView
             android:id="@+id/sv_map"
             android:layout_width="match_parent"
             android:layout_height="250dp" />
@@ -50,19 +50,21 @@
             android:checked="true"
             android:text="参考(红色表示点相对于左上原点的坐标\n蓝色表示相对于地图实际大小的坐标\n绿色表示相对于原图大小的坐标\n(0,0)表示坐标系的原点)" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/sc_coordinate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="原图坐标系原点位置（左上、左下）"
-                android:textOff="左上"
-                android:textOn="左下" />
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/sc_coordinate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="原图坐标系原点位置（左上、左下）"
+            android:textOff="左上"
+            android:textOn="左下" />
 
-        </LinearLayout>
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/sc_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="连线" />
+
     </LinearLayout>
 </layout>
