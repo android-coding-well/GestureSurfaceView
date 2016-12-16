@@ -10,6 +10,12 @@
 ##使用说明
 待写...
 
+
+## JavaDoc
+[在线JavaDoc](https://jitpack.io/com/github/huweijian5/GestureSurfaceView/1.0.0/javadoc/index.html)
+网址：https://jitpack.io/com/github/huweijian5/GestureSurfaceView/[VersionCode](https://github.com/huweijian5/GestureSurfaceVie/releases)/javadoc/index.html
+其中VersionCode请替换为最新版本号
+
 ## 引用
 
 * 如果需要引用此库,做法如下：
