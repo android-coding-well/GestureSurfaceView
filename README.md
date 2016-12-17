@@ -18,7 +18,7 @@
 * [在线JavaDoc](https://jitpack.io/com/github/huweijian5/GestureSurfaceView/1.0.0/javadoc/index.html)
 
 * 网址：`https://jitpack.io/com/github/huweijian5/GestureSurfaceView/[VersionCode]/javadoc/index.html`
-* 其中[VersionCode](https://github.com/huweijian5/GestureSurfaceVie/releases)请替换为最新版本号
+* 其中[VersionCode](https://github.com/huweijian5/GestureSurfaceView/releases)请替换为最新版本号
 * 注意文档使用UTF-8编码，如遇乱码，请在浏览器选择UTF-8编码即可
 
 ## 引用
@@ -36,7 +36,7 @@ allprojects {
 * and then,add the dependecy:
 ```
 dependencies {
-	        compile 'com.github.huweijian5:GestureSurfaceVie:latest_version'
+	        compile 'com.github.huweijian5:GestureSurfaceView:latest_version'
 }
 ```
-* 其中latest_version请到[releases](https://github.com/huweijian5/GestureSurfaceVie/releases)中查看
+* 其中latest_version请到[releases](https://github.com/huweijian5/GestureSurfaceView/releases)中查看
