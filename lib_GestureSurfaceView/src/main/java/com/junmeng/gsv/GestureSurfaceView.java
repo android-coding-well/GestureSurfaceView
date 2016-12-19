@@ -101,16 +101,16 @@ public class GestureSurfaceView extends BaseSurfaceView {
     private Bitmap centerBitmap;//中心点定位位图
     private int centerBitmapPosition = CENTER_BITMAP_POSITION_CENTER;
 
-    private Bitmap mapBitmap;//地图位图
-    private RotateRectF mapRectf = new RotateRectF();//地图的rect
-    private int srcMapWidth, srcMapHeight;//原地图宽高
-    private int mapWidth, mapHeight;//当前图实际宽高（经过缩放的）
-    private float mapLeftX, mapLeftY;//图片左上角坐标
-    private float mapCenterX, mapCenterY;//图片中心点
+    public  Bitmap mapBitmap;//地图位图
+    public  RotateRectF mapRectf = new RotateRectF();//地图的rect
+    public  int srcMapWidth, srcMapHeight;//原地图宽高
+    public  int mapWidth, mapHeight;//当前图实际宽高（经过缩放的）
+    public  float mapLeftX, mapLeftY;//图片左上角坐标
+    public  float mapCenterX, mapCenterY;//图片中心点
     private int centerColor = 0xff0000ff;//中心点颜色
-    private int centerSize = 7;//中心点半径
-    private float mapRotate = 0;//地图旋转角度
-    private float mapScale = 1.0f;//地图缩放比例
+    public  int centerSize = 7;//中心点半径
+    public  float mapRotate = 0;//地图旋转角度
+    public  float mapScale = 1.0f;//地图缩放比例
     private float minMapScale = 0.5f;
     private float maxMapScale = 6.0f;
 
@@ -124,6 +124,11 @@ public class GestureSurfaceView extends BaseSurfaceView {
     private List<PointF> points = new ArrayList<>();//添加在地图上的点,注意此List保存的数据不是真实的点的坐标，需要根据坐标系计算才能得到对应的坐标
     private boolean isDrawAddPoints = true;//是否绘制添加点
     private boolean isDrawCenterIcon = true;//是否绘制中心点图标
+    private boolean isSupportRotateGesture = true;//是否支持旋转手势
+    private boolean isSupportScaleGesture = true;//是否支持缩放手势
+    private boolean isSupportDragGesture = true;//是否支持拖拽手势
+    private boolean isCenterBitmapVisible = true;
+
 
     public GestureSurfaceView(Context context) {
         this(context, null, 0);
@@ -146,6 +151,34 @@ public class GestureSurfaceView extends BaseSurfaceView {
         paint.setAntiAlias(true);
         paint.setTextSize(20);
     }
+
+    /**
+     * 是否支持旋转手势
+     *
+     * @param bool
+     */
+    public void isSupportRotateGesture(boolean bool) {
+        isSupportRotateGesture = bool;
+    }
+
+    /**
+     * 是否支持缩放手势
+     *
+     * @param bool
+     */
+    public void isSupportScaleGesture(boolean bool) {
+        isSupportScaleGesture = bool;
+    }
+
+    /**
+     * 是否支持拖拽手势
+     *
+     * @param bool
+     */
+    public void isSupportDragGesture(boolean bool) {
+        isSupportDragGesture = bool;
+    }
+
 
     /**
      * 是否绘制添加的点,默认会把添加的点绘制出来，如果用户想自己处理点的绘制，可在此设置为false
@@ -186,6 +219,15 @@ public class GestureSurfaceView extends BaseSurfaceView {
         }
         return null;
     }
+
+    /**
+     * 设置中心图标是否可见
+     * @param bool
+     */
+    public void setCenterBitmapVisibility(boolean bool){
+        isCenterBitmapVisible=bool;
+    }
+
 
     /**
      * 设置中心点颜色
@@ -628,8 +670,10 @@ public class GestureSurfaceView extends BaseSurfaceView {
                         float dy = event.getY() - clcikPointf.y;
                         clcikPointf.x = event.getX();
                         clcikPointf.y = event.getY();
-                        translateMap(dx, dy);
-                        onGesture(dx, dy, 1, 0);
+                        if (isSupportDragGesture) {
+                            translateMap(dx, dy);
+                        }
+                        onGesture(GESTURE_DRAG, dx, dy, 1, 0);
 
                     }
                 } else {
@@ -643,18 +687,22 @@ public class GestureSurfaceView extends BaseSurfaceView {
                         float rotate = newRotation - oldRotation;
                         oldRotation = newRotation;
                         Log.i(TAG, "旋转角度：" + rotate);
-                        rotate(rotate);
-                        onGesture(0, 0, 1, rotate);
+                        if (isSupportRotateGesture) {
+                            rotate(rotate);
+                        }
+                        onGesture(GESTURE_ROTATE, 0, 0, 1, rotate);
 
                     } else {//否则则是缩放
                         float scale = newDist / oldDist;
                         Log.i(TAG, "缩放比例：" + scale);
-                        if (scale < 1) {//缩小
-                            zoom(1.0f - scaleSsensitivity / 1000.0f);
-                        } else {//放大
-                            zoom(1.0f + scaleSsensitivity / 1000.0f);
+                        if (isSupportScaleGesture) {
+                            if (scale < 1) {//缩小
+                                zoom(1.0f - scaleSsensitivity / 1000.0f);
+                            } else {//放大
+                                zoom(1.0f + scaleSsensitivity / 1000.0f);
+                            }
                         }
-                        onGesture(0, 0, scale, 0);
+                        onGesture(GESTURE_SCALE, 0, 0, scale, 0);
                     }
                 }
                 break;
@@ -662,9 +710,9 @@ public class GestureSurfaceView extends BaseSurfaceView {
         return true;
     }
 
-    private void onGesture(float dx, float dy, float scale, float rotate) {
+    private void onGesture(@GestureAction int gesture, float dx, float dy, float scale, float rotate) {
         if (onGestureListener != null) {
-            onGestureListener.onGesture(GESTURE_DRAG, dx, dy, scale, rotate);
+            onGestureListener.onGesture(gesture, dx, dy, scale, rotate);
         }
     }
 
@@ -875,8 +923,6 @@ public class GestureSurfaceView extends BaseSurfaceView {
         c.drawText("srcW=" + srcMapWidth, dRightTop.x, dRightTop.y + 20, paint);
         c.drawText("srcH=" + srcMapHeight, dLeftDown.x, dLeftDown.y + 40, paint);
     }
-
-
 
 
 }
